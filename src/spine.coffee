@@ -232,7 +232,7 @@ class Model extends Module
   constructor: (atts) ->
     super
     @load atts if atts
-    @cid = @constructor.uid('c-')
+    @cid or= @constructor.uid('c-')
 
   isNew: ->
     not @exists()
@@ -302,12 +302,12 @@ class Model extends Module
     this
 
   dup: (newRecord) ->
-    result = new @constructor(@attributes())
+    newAtts = @attributes()
     if newRecord is false
-      result.cid = @cid
+      newAtts.cid = @cid
     else
-      delete result.id
-    result
+      delete newAtts.id
+    new @constructor(newAtts)
 
   clone: ->
     createObject(@)
